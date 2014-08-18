@@ -2,7 +2,7 @@
 
 var path = require('path');
 
-var isAbsolutePath = path.isAbsolute || require('is-absolute');
+var isAbsolutePath = require('is-absolute');
 var isInt = require('is-integer');
 
 module.exports = function stripDirs(pathStr, count, option) {
