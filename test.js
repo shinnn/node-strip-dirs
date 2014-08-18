@@ -42,7 +42,7 @@ test('stripDirs()', function(t) {
     'should throw an error when the path is absolute path.'
   );
   t.throws(
-    stripDirs.bind(null, 'C:\\a', 1),
+    stripDirs.bind(null, 'C:/a', 1),
     'should throw an error when the path is Windows absolute path.'
   );
   t.throws(
