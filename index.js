@@ -23,7 +23,7 @@ module.exports = function stripDirs(pathStr, count, option) {
     throw new TypeError(count + ' is not an integer.');
   }
   if (count < 0) {
-    throw new RangeError('Expecting a natural countber or 0.');
+    throw new RangeError('Expecting a natural number or 0.');
   }
 
   var pathComponents = path.normalize(pathStr).split(path.sep);
