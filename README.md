@@ -54,7 +54,7 @@ stripDirs('/foo/bar', 1) // throw an error because the path is an absolute path
 Type: `Boolean`  
 Default: `false`
 
-By default, it keeps the last path component when they are fewer than the *count*.
+By default, it keeps the last path component when path components are fewer than the *count*.
 
 If this option is enabled, it throws an error in such case.
 
