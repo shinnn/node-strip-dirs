@@ -5,7 +5,7 @@
 [![Dependency Status](https://david-dm.org/shinnn/node-strip-dirs.svg)](https://david-dm.org/shinnn/node-strip-dirs)
 [![devDependency Status](https://david-dm.org/shinnn/node-strip-dirs/dev-status.svg)](https://david-dm.org/shinnn/node-strip-dirs#info=devDependencies)
 
-Remove leading directory components from a path, such as [tar(1)](http://linuxcommand.org/man_pages/tar1.html)'s `--strip-components` option
+Remove leading directory components from a path, like [tar(1)](http://linuxcommand.org/man_pages/tar1.html)'s `--strip-components` option
 
 ```javascript
 var stripDirs = require('strip-dirs');
