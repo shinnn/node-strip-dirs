@@ -31,6 +31,7 @@
     "strip-components"
   ],
   "dependencies": {
+    "chalk": "^0.5.1",
     "get-stdin": "^3.0.0",
     "is-absolute": "^0.1.4",
     "is-integer": "^1.0.3",
@@ -40,7 +41,7 @@
     "eslint": "^0.7.4",
     "jscs": "^1.5.9",
     "require-main": "^0.1.1",
-    "tap-spec": "^0.2.0",
+    "tap-spec": "^0.2.1",
     "tape": "^2.14.0"
   }
 }

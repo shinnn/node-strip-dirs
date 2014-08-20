@@ -5,19 +5,21 @@ var getStdin = require('get-stdin');
 
 var argv = require('minimist')(process.argv.slice(2));
 var stripDirs = require('./index.js');
-var version = require('./package.json').version;
+var pkg = require('./package.json');
 
 function help() {
+  var chalk = require('chalk');
+
   console.log(
-    'strip-dirs v' + version + '\n' +
-    'Remove leading directory components from a path, ' +
-    'such as tar\'s --strip-components option.\n' +
+    chalk.cyan(pkg.name) + chalk.gray(' v' + pkg.version) + '\n' +
+    pkg.description + '.\n' +
     '\n' +
     'Usage 1: $ strip-dirs <string> --count(or -c) <number> [--narrow(or -n)]\n' +
     'Usage 2: $ echo <string> | strip-dirs --count(or -c) <number> [--narrow(or -n)]\n' +
     '\n' +
-    '--count,  -c: Number of directories to strip from the path\n' +
-    '--narrow, -n: Disallow surplus count of directory level'
+    'Options:\n' +
+    chalk.yellow('--count,  -c') + ': Number of directories to strip from the path\n' +
+    chalk.yellow('--narrow, -n') + ': Disallow surplus count of directory level'
   );
 }
 
@@ -50,7 +52,7 @@ function run(path) {
 }
 
 if (argv.version || argv.v) {
-  console.log(version);
+  console.log(pkg.version);
 } else if (argv.help || argv.h) {
   help();
 } else if (process.stdin.isTTY) {
