@@ -1,5 +1,6 @@
 'use strict';
 
+var path = require('path');
 var spawn = require('child_process').spawn;
 
 var test = require('tape');
@@ -22,7 +23,7 @@ test('stripDirs()', function(t) {
     'should normalize the path taking care of redundant `./` and `/`.'
   );
   t.equal(
-    stripDirs('a/b/', 0), 'a/b',
+    stripDirs('a/b/', 0), path.normalize('a/b'),
     'should not remove path components when the second argument is `0`.'
   );
   t.equal(
@@ -64,7 +65,9 @@ test('stripDirs()', function(t) {
 test('"strip-dirs" command', function(t) {
   var pkg = require('./package.json');
   var stripDirs = function(args) {
-    return spawn(pkg.bin, args, {stdio: [process.stdin, null, null]});
+    return spawn('node', [pkg.bin].concat(args), {
+      stdio: [process.stdin, null, null]
+    });
   };
 
   t.plan(12);
@@ -137,7 +140,9 @@ test('"strip-dirs" command', function(t) {
     st.plan(2);
 
     var stripDirsPipe = function(args) {
-      return spawn(pkg.bin, args, {stdio: ['pipe', null, null]});
+      return spawn('node', [pkg.bin].concat(args), {
+        stdio: ['pipe', null, null]
+      });
     };
 
     var child0 = stripDirsPipe(['--count', '1']);
