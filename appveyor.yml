@@ -15,6 +15,5 @@ install:
 build: off
 
 test_script:
-  - node --version
-  - ps: npm test
-  - cmd: npm test
+  - ps: node test.js
+  - cmd: node test.js

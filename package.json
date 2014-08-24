@@ -10,7 +10,7 @@
   "bin": "./cli.js",
   "scripts": {
     "pretest": "eslint *.js & jscs *.js",
-    "test": "tape test.js | tap-spec"
+    "test": "node test.js | tap-spec"
   },
   "licenses": [
     {
