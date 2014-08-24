@@ -137,7 +137,7 @@ test('"strip-dirs" command', function(t) {
   });
 
   t.test('"strip-dirs" command with pipe (`|`)', function(st) {
-    st.plan(2);
+    st.plan(3);
 
     var stripDirsPipe = function(args) {
       return spawn('node', [pkg.bin].concat(args), {
@@ -161,5 +161,14 @@ test('"strip-dirs" command', function(t) {
     });
     child1.stdin.write('a/b');
     child1.stdin.end();
+    var cpEmpty = stripDirsPipe([]);
+    cpEmpty.stdout.on('data', function(data) {
+      st.equal(
+        data.toString(), '.\n',
+        'should print current directory when stdin is empty.'
+      );
+    });
+    cpEmpty.stdin.write('');
+    cpEmpty.stdin.end();
   });
 });

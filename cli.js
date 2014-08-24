@@ -46,6 +46,8 @@ function run(path) {
     } catch (e) {
       console.error(e.message);
     }
+  } else if (!process.stdin.isTTY) {
+    console.log(require('path').join(''));
   } else {
     help();
   }
