@@ -10,7 +10,9 @@
   "bin": "./cli.js",
   "scripts": {
     "pretest": "eslint *.js & jscs *.js",
-    "test": "node test.js | tap-spec"
+    "test": "node test.js | tap-spec",
+    "coverage": "istanbul cover test.js",
+    "coveralls": "${npm_package_scripts_coverage} && cat ./coverage/lcov.info | coveralls"
   },
   "licenses": [
     {
@@ -38,7 +40,9 @@
     "minimist": "^1.1.0"
   },
   "devDependencies": {
+    "coveralls": "^2.11.1",
     "eslint": "^0.7.4",
+    "istanbul": "^0.3.0",
     "jscs": "^1.5.9",
     "require-main": "^0.1.1",
     "tap-spec": "^0.2.1",
