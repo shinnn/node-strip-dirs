@@ -8,7 +8,7 @@ var test = require('tape');
 test('stripDirs()', function(t) {
   var stripDirs = require('require-main')();
 
-  t.plan(12);
+  t.plan(13);
 
   t.equal(
     stripDirs('a/b.c', 1), 'b.c',
@@ -17,6 +17,10 @@ test('stripDirs()', function(t) {
   t.equal(
     stripDirs('./a/b', 1), 'b',
     'should remove path components taking care of leading `./`.'
+  );
+  t.equal(
+    stripDirs('a/../', 1), '.',
+    'should return current directory when the path is current directory.'
   );
   t.equal(
     stripDirs('a/././/b/./', 1), 'b',
@@ -32,7 +36,7 @@ test('stripDirs()', function(t) {
   );
   t.throws(
     stripDirs.bind(null, 'a/b'),
-    'should throw an error when it takes less than two argument.'
+    'should throw an error when it takes less than two arguments.'
   );
   t.throws(
     stripDirs.bind(null, ['a/b'], 1),
@@ -145,22 +149,23 @@ test('"strip-dirs" command', function(t) {
       });
     };
 
-    var child0 = stripDirsPipe(['--count', '1']);
-    child0.stdout.on('data', function(data) {
+    var cp = stripDirsPipe(['--count', '1']);
+    cp.stdout.on('data', function(data) {
       st.equal(data.toString(), 'b\n', 'should recieve stdin.');
     });
-    child0.stdin.write('a/b');
-    child0.stdin.end();
+    cp.stdin.write('a/b');
+    cp.stdin.end();
 
-    var child1 = stripDirsPipe([]);
-    child1.stderr.on('data', function(data) {
+    var cpError = stripDirsPipe([]);
+    cpError.stderr.on('data', function(data) {
       st.equal(
         data.toString(), '`--count` option required.\n',
         'should print message to stderr when `--count` isn\'t specified.'
       );
     });
-    child1.stdin.write('a/b');
-    child1.stdin.end();
+    cpError.stdin.write('a/b');
+    cpError.stdin.end();
+
     var cpEmpty = stripDirsPipe([]);
     cpEmpty.stdout.on('data', function(data) {
       st.equal(
