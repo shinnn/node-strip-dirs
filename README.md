@@ -1,6 +1,5 @@
 # strip-dirs 
 
-[![NPM version](https://badge.fury.io/js/strip-dirs.svg)](https://www.npmjs.org/package/strip-dirs)
 [![Build Status](https://travis-ci.org/shinnn/node-strip-dirs.svg?branch=master)](https://travis-ci.org/shinnn/node-strip-dirs)
 [![Build status](https://ci.appveyor.com/api/projects/status/pr5edbtg59f6xfgn)](https://ci.appveyor.com/project/ShinnosukeWatanabe/node-strip-dirs)
 [![Coverage Status](https://img.shields.io/coveralls/shinnn/node-strip-dirs.svg)](https://coveralls.io/r/shinnn/node-strip-dirs)
@@ -18,6 +17,8 @@ stripDirs('foo/bar/baz', 999); //=> 'baz'
 ```
 
 ## Installation
+
+[![NPM version](https://badge.fury.io/js/strip-dirs.svg)](https://www.npmjs.org/package/strip-dirs)
 
 [Install with npm](https://www.npmjs.org/doc/cli/npm-install.html). (Make sure you have installed [Node](http://nodejs.org/))
 
