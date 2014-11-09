@@ -6,9 +6,9 @@ var spawn = require('child_process').spawn;
 var test = require('tape');
 
 test('stripDirs()', function(t) {
-  var stripDirs = require('require-main')();
-
   t.plan(13);
+
+  var stripDirs = require('./');
 
   t.equal(
     stripDirs('a/b.c', 1), 'b.c',
