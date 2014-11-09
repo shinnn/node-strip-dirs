@@ -20,9 +20,9 @@ stripDirs('foo/bar/baz', 999); //=> 'baz'
 
 [![NPM version](https://badge.fury.io/js/strip-dirs.svg)](https://www.npmjs.org/package/strip-dirs)
 
-[Install with npm](https://www.npmjs.org/doc/cli/npm-install.html). (Make sure you have installed [Node](http://nodejs.org/))
+[Install with npm](https://www.npmjs.org/doc/cli/npm-install.html)
 
-```
+```sh
 npm install --save strip-dirs
 ```
 
@@ -52,6 +52,8 @@ stripDirs('foo/bar', 0); //=> 'foo/bar'
 stripDirs('/foo/bar', 1) // throw an error because the path is an absolute path
 ```
 
+If you want to remove all directory components certainly, use [`path.basename`](http://nodejs.org/api/path.html#path_path_basename_p_ext) instead of this module.
+
 #### option.narrow
 
 Type: `Boolean`  
@@ -71,25 +73,25 @@ stripDirs('foo/bar/baz', 9999, {narrow: true}); // throws an error
 
 You can use this module as `strip-dirs` command by installing it globally.
 
-```
+```sh
 npm install -g strip-dirs
 ```
 
 ### Usage
 
-```
+```sh
 strip-dirs <string> --count(or -c) <number> [--narrow(or -n)]
 ```
 
 Or, use with pipe(`|`):
 
-```
+```sh
 echo <string> | strip-dirs --count(or -c) <number> [--narrow(or -n)]
 ```
 
 ### Flags
 
-```
+```sh
 --count,  -c: Number of directories to strip from the path
 --narrow, -n: Disallow surplus count of directory level
 ```
