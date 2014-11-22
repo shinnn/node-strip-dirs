@@ -8,6 +8,11 @@
     "url": "https://github.com/shinnn"
   },
   "bin": "./cli.js",
+  "files": [
+    "cli.js",
+    "index.js",
+    "LICENSE"
+  ],
   "scripts": {
     "pretest": "eslint *.js & jscs *.js",
     "test": "node test.js | tap-spec",
@@ -19,11 +24,6 @@
       "type": "MIT",
       "url": "https://github.com/shinnn/node-strip-dirs/blob/master/LICENSE"
     }
-  ],
-  "files": [
-    "cli.js",
-    "index.js",
-    "LICENSE"
   ],
   "keywords": [
     "path",
@@ -44,8 +44,8 @@
     "istanbul": "^0.3.2",
     "istanbul-coveralls": "^1.0.1",
     "jscs": "^1.7.3",
-    "tap-spec": "^1.0.1",
-    "tape": "^3.0.2"
+    "tap-spec": "^2.1.0",
+    "tape": "^3.0.3"
   },
   "jscsConfig": {
     "preset": "google",
