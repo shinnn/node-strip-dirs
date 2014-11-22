@@ -33,17 +33,14 @@ function help() {
 
 function run(path) {
   if (path) {
-    var count;
     if (argv.count !== undefined) {
-      count = +argv.count;
+      var stripDirs = require('./');
+      console.log(stripDirs(path.trim(), +argv.count, {narrow: argv.narrow}));
     } else {
-      console.warn('`--count` option required.');
-      process.exit(1);
+      process.stderr.write('`--count` option required.\n', function() {
+        process.exit(1);
+      });
     }
-
-    var stripDirs = require('./');
-    console.log(stripDirs(path.trim(), count, {narrow: argv.narrow}));
-
   } else if (!process.stdin.isTTY) {
     console.log('.');
   } else {
