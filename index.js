@@ -18,7 +18,7 @@ module.exports = function stripDirs(pathStr, count, option) {
   }
 
   if (typeof pathStr !== 'string') {
-    throw new TypeError(pathStr + ' is not a string.');
+    throw new TypeError(pathStr + ' is not a string. First argument must be a relative path.');
   }
   if (isAbsolutePath(pathStr)) {
     throw new TypeError(pathStr + ' is an absolute path. A relative path required.');
