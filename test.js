@@ -3,6 +3,7 @@
 var path = require('path');
 var spawn = require('child_process').spawn;
 
+var pkg = require('./package.json');
 var test = require('tape');
 
 test('stripDirs()', function(t) {
@@ -66,114 +67,135 @@ test('stripDirs()', function(t) {
   t.end();
 });
 
-test('"strip-dirs" command', function(t) {
-  var pkg = require('./package.json');
+test('"strip-dirs" command inside a TTY context', function(t) {
+  t.plan(14);
+
   var stripDirs = function(args) {
-    return spawn('node', [pkg.bin].concat(args), {
+    var cp = spawn('node', [pkg.bin].concat(args), {
       stdio: [process.stdin, null, null]
     });
+    cp.stdout.setEncoding('utf-8');
+    cp.stderr.setEncoding('utf-8');
+    return cp;
   };
 
-  t.plan(12);
-
   stripDirs(['a/.b', '--count', '1'])
-  .stdout.on('data', function(data) {
-    t.equal(data.toString(), '.b\n', 'should remove path components by count.');
+  .stdout.on('data', function(output) {
+    t.equal(output, '.b\n', 'should remove path components by count.');
   });
 
   stripDirs(['a/././/b/./', '--c', '1'])
-  .stdout.on('data', function(data) {
-    t.equal(data.toString(), 'b\n', 'should accept `-c` alias.');
+  .stdout.on('data', function(output) {
+    t.equal(output, 'b\n', 'should use -c as an alias of --count.');
   });
 
   stripDirs(['--version'])
-  .stdout.on('data', function(data) {
+  .stdout.on('data', function(output) {
     t.equal(
-      data.toString(), pkg.version + '\n',
-      'should print module version with `--version` flag.'
+      output, pkg.version + '\n',
+      'should print module version with `--version.'
     );
   });
 
   stripDirs(['-v'])
-  .stdout.on('data', function(data) {
-    t.equal(data.toString(), pkg.version + '\n', 'should accept `-v` alias.');
+  .stdout.on('data', function(output) {
+    t.equal(output, pkg.version + '\n', 'should use -v as an alias of --version.');
   });
 
   stripDirs(['--help'])
-  .stdout.on('data', function(data) {
-    t.ok(/Usage/.test(data.toString()), 'should print help with `--help` flag.');
+  .stdout.on('data', function(output) {
+    t.ok(/Usage/.test(output), 'should print help with `--help` flag.');
   });
 
   stripDirs(['--h'])
-  .stdout.on('data', function(data) {
-    t.ok(/Usage/.test(data.toString()), 'should accept `-h` alias.');
+  .stdout.on('data', function(output) {
+    t.ok(/Usage/.test(output), 'should use -h as an alias of --help.');
   });
 
+  var narrowErr = '';
   stripDirs(['a/b', '--count', '2', '--narrow'])
-  .stderr.on('data', function(data) {
-    t.ok(data.toString(), 'should accept `--narrow` flag.');
+  .on('close', function(code) {
+    t.notEqual(code, 0, 'should accept `--narrow` flag.');
+    t.ok(
+      /Cannot strip more directories/.test(narrowErr),
+      'should print the error message `narrow` option produces.'
+    );
+  })
+  .stderr.on('data', function(output) {
+    narrowErr += output;
   });
 
-  stripDirs(['a/b', '--count', '2', '--n'])
-  .stderr.on('data', function(data) {
-    t.ok(data.toString(), 'should accept `-n` alias.');
+  var nErr = '';
+  stripDirs(['a/b', '--count', '2', '-n'])
+  .on('close', function() {
+    t.ok(
+      /Cannot strip more directories/.test(nErr),
+      'should use -n as an alias of --narrow.'
+    );
+  })
+  .stderr.on('data', function(output) {
+    nErr += output;
   });
 
   stripDirs([])
-  .stdout.on('data', function(data) {
-    t.ok(
-      /Usage/.test(data.toString()),
-      'should print help when the path isn\'t specified.'
-    );
+  .stdout.on('data', function(output) {
+    t.ok(/Usage/.test(output), 'should print help when the path isn\'t specified.');
   });
 
+  var noCountErr = '';
   stripDirs(['a'])
-  .stderr.on('data', function(data) {
+  .on('close', function(code) {
+    t.notEqual(code, 0, 'should fail when `--count` isn\'t specified.');
+    t.equal(
+      noCountErr, '`--count` option required.\n',
+      'should print error message to stderr when `--count` isn\'t specified.'
+    );
+  })
+  .stderr.on('data', function(output) {
+    noCountErr += output;
+  });
+
+  var absolutePathErr = '';
+  stripDirs(['/a/b', '--count', '1'])
+  .on('close', function(code) {
+    t.notEqual(code, 0, 'should fail when the path is an absolute path.');
+    t.ok(absolutePathErr, 'should print error message of index.js to stderr.');
+  })
+  .stderr.on('data', function(output) {
+    absolutePathErr += output;
+  });
+});
+
+test('"strip-dirs" command outside a TTY context', function(t) {
+  t.plan(3);
+
+  var stripDirsPipe = function(args) {
+    return spawn('node', [pkg.bin].concat(args), {
+      stdio: ['pipe', null, null]
+    });
+  };
+
+  var cp = stripDirsPipe(['--count', '1']);
+  cp.stdout.on('data', function(data) {
+    t.equal(data.toString(), 'b\n', 'should recieve stdin.');
+  });
+  cp.stdin.end('a/b');
+
+  var cpError = stripDirsPipe([]);
+  cpError.stderr.on('data', function(data) {
     t.equal(
       data.toString(), '`--count` option required.\n',
       'should print message to stderr when `--count` isn\'t specified.'
     );
   });
+  cpError.stdin.end('a/b');
 
-  stripDirs(['/a/b', '--count', '1'])
-  .stderr.on('data', function(data) {
-    t.ok(data.toString(), 'should print the error of index.js to stderr.');
+  var cpEmpty = stripDirsPipe([]);
+  cpEmpty.stdout.on('data', function(data) {
+    t.equal(
+      data.toString(), '.\n',
+      'should print current directory when stdin is empty.'
+    );
   });
-
-  t.test('"strip-dirs" command with pipe (`|`)', function(st) {
-    st.plan(3);
-
-    var stripDirsPipe = function(args) {
-      return spawn('node', [pkg.bin].concat(args), {
-        stdio: ['pipe', null, null]
-      });
-    };
-
-    var cp = stripDirsPipe(['--count', '1']);
-    cp.stdout.on('data', function(data) {
-      st.equal(data.toString(), 'b\n', 'should recieve stdin.');
-    });
-    cp.stdin.write('a/b');
-    cp.stdin.end();
-
-    var cpError = stripDirsPipe([]);
-    cpError.stderr.on('data', function(data) {
-      st.equal(
-        data.toString(), '`--count` option required.\n',
-        'should print message to stderr when `--count` isn\'t specified.'
-      );
-    });
-    cpError.stdin.write('a/b');
-    cpError.stdin.end();
-
-    var cpEmpty = stripDirsPipe([]);
-    cpEmpty.stdout.on('data', function(data) {
-      st.equal(
-        data.toString(), '.\n',
-        'should print current directory when stdin is empty.'
-      );
-    });
-    cpEmpty.stdin.write('');
-    cpEmpty.stdin.end();
-  });
+  cpEmpty.stdin.end('');
 });
