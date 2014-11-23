@@ -36,31 +36,31 @@ test('stripDirs()', function(t) {
     'should keep the last path component.'
   );
   t.throws(
-    stripDirs.bind(null, 'a/b'),
+    stripDirs.bind(null, 'a/b'), /Error.*Expecting two arguments/,
     'should throw an error when it takes less than two arguments.'
   );
   t.throws(
-    stripDirs.bind(null, ['a/b'], 1),
-    'should throw an error when the first argument is not a string.'
+    stripDirs.bind(null, ['a/b'], 1), /TypeError.*is not a string/,
+    'should throw a type error when the first argument is not a string.'
   );
   t.throws(
-    stripDirs.bind(null, '/a/b', 1),
+    stripDirs.bind(null, '/a/b', 1), /Error.*relative path required/,
     'should throw an error when the path is absolute path.'
   );
   t.throws(
-    stripDirs.bind(null, 'C:/a', 1),
+    stripDirs.bind(null, 'C:/a', 1), /Error.*relative path required/,
     'should throw an error when the path is Windows absolute path.'
   );
   t.throws(
-    stripDirs.bind(null, 'a/b', 1.5),
+    stripDirs.bind(null, 'a/b', 1.5), /Error.*must be a natural number/,
     'should throw an error when the second argument is not an integer.'
   );
   t.throws(
-    stripDirs.bind(null, 'a/b', -1),
+    stripDirs.bind(null, 'a/b', -1), /Error.*must be a natural number/,
     'should throw an error when the second argument is a negative number.'
   );
   t.throws(
-    stripDirs.bind(null, 'a/b', 2, {narrow: true}),
+    stripDirs.bind(null, 'a/b', 2, {narrow: true}), /RangeError.*Cannot strip/,
     'should accept `narrow` option.'
   );
 
@@ -68,7 +68,7 @@ test('stripDirs()', function(t) {
 });
 
 test('"strip-dirs" command inside a TTY context', function(t) {
-  t.plan(14);
+  t.plan(16);
 
   var stripDirs = function(args) {
     var cp = spawn('node', [pkg.bin].concat(args), {
@@ -112,29 +112,34 @@ test('"strip-dirs" command inside a TTY context', function(t) {
     t.ok(/Usage/.test(output), 'should use -h as an alias of --help.');
   });
 
-  var narrowErr = '';
-  stripDirs(['a/b', '--count', '2', '--narrow'])
+  stripDirs(['a', '--count'])
   .on('close', function(code) {
-    t.notEqual(code, 0, 'should accept `--narrow` flag.');
-    t.ok(
-      /Cannot strip more directories/.test(narrowErr),
-      'should print the error message `narrow` option produces.'
-    );
+    t.equal(code, 1, 'should fail when `--count` has no value.');
   })
   .stderr.on('data', function(output) {
-    narrowErr += output;
+    t.equal(
+      output, '--count (or -c) option must be a number.\n',
+      'should print error message to stderr when `--count` has no value.'
+    );
   });
 
-  var nErr = '';
-  stripDirs(['a/b', '--count', '2', '-n'])
-  .on('close', function() {
-    t.ok(
-      /Cannot strip more directories/.test(nErr),
-      'should use -n as an alias of --narrow.'
-    );
+  stripDirs(['a/b', '--count', '2', '--narrow'])
+  .on('close', function(code) {
+    t.equal(code, 1, 'should accept `--narrow` flag.');
   })
   .stderr.on('data', function(output) {
-    nErr += output;
+    t.ok(
+      /Cannot strip more directories/.test(output),
+      'should print the error message `narrow` option produces.'
+    );
+  });
+
+  stripDirs(['a/b', '--count', '2', '-n'])
+  .stderr.on('data', function(output) {
+    t.ok(
+      /Cannot strip more directories/.test(output),
+      'should use -n as an alias of --narrow.'
+    );
   });
 
   stripDirs([])
@@ -142,27 +147,23 @@ test('"strip-dirs" command inside a TTY context', function(t) {
     t.ok(/Usage/.test(output), 'should print help when the path isn\'t specified.');
   });
 
-  var noCountErr = '';
   stripDirs(['a'])
   .on('close', function(code) {
-    t.notEqual(code, 0, 'should fail when `--count` isn\'t specified.');
+    t.equal(code, 1, 'should fail when `--count` isn\'t specified.');
+  })
+  .stderr.on('data', function(output) {
     t.equal(
-      noCountErr, '`--count` option required.\n',
+      output, '--count (or -c) option required.\n',
       'should print error message to stderr when `--count` isn\'t specified.'
     );
-  })
-  .stderr.on('data', function(output) {
-    noCountErr += output;
   });
 
-  var absolutePathErr = '';
   stripDirs(['/a/b', '--count', '1'])
   .on('close', function(code) {
-    t.notEqual(code, 0, 'should fail when the path is an absolute path.');
-    t.ok(absolutePathErr, 'should print error message of index.js to stderr.');
+    t.equal(code, 1, 'should fail when the path is an absolute path.');
   })
   .stderr.on('data', function(output) {
-    absolutePathErr += output;
+    t.ok(output, 'should print error message of index.js to stderr.');
   });
 });
 
@@ -184,7 +185,7 @@ test('"strip-dirs" command outside a TTY context', function(t) {
   var cpError = stripDirsPipe([]);
   cpError.stderr.on('data', function(data) {
     t.equal(
-      data.toString(), '`--count` option required.\n',
+      data.toString(), '--count (or -c) option required.\n',
       'should print message to stderr when `--count` isn\'t specified.'
     );
   });

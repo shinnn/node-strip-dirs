@@ -23,7 +23,7 @@ function help() {
     'Usage 1: $ strip-dirs <string> --count(or -c) <number> [--narrow(or -n)]',
     'Usage 2: $ echo <string> | strip-dirs --count(or -c) <number> [--narrow(or -n)]',
     '',
-    'Options:',
+    'Flags:',
     chalk.yellow('--count,   -c') + '  Number of directories to strip from the path',
     chalk.yellow('--narrow,  -n') + '  Disallow surplus count of directory level',
     chalk.yellow('--version, -v') + '  Print version',
@@ -31,15 +31,27 @@ function help() {
   ].join('\n'));
 }
 
+function printErr(msg) {
+  process.stderr.write(msg + '\n', function() {
+    process.exit(1);
+  });
+}
+
 function run(path) {
   if (path) {
     if (argv.count !== undefined) {
-      var stripDirs = require('./');
-      console.log(stripDirs(path.trim(), +argv.count, {narrow: argv.narrow}));
+      if (typeof argv.count !== 'number') {
+        printErr('--count (or -c) option must be a number.');
+      } else {
+        var stripDirs = require('./');
+        try {
+          console.log(stripDirs(path.trim(), argv.count, {narrow: argv.narrow}));
+        } catch (e) {
+          printErr(e.message);
+        }
+      }
     } else {
-      process.stderr.write('`--count` option required.\n', function() {
-        process.exit(1);
-      });
+      printErr('--count (or -c) option required.');
     }
   } else if (!process.stdin.isTTY) {
     console.log('.');
