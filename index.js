@@ -8,7 +8,7 @@
 var path = require('path');
 
 var isAbsolutePath = require('is-absolute');
-var isInt = require('is-integer');
+var isNaturalNumber = require('is-natural-number');
 
 module.exports = function stripDirs(pathStr, count, option) {
   option = option || {narrow: false};
@@ -18,17 +18,14 @@ module.exports = function stripDirs(pathStr, count, option) {
   }
 
   if (typeof pathStr !== 'string') {
-    throw new TypeError(pathStr + ' is not a string. First argument must be a relative path.');
+    throw new TypeError(pathStr + ' is not a string. First argument must be a path string.');
   }
   if (isAbsolutePath(pathStr)) {
     throw new TypeError(pathStr + ' is an absolute path. A relative path required.');
   }
 
-  if (!isInt(count)) {
-    throw new TypeError(count + ' is not an integer.');
-  }
-  if (count < 0) {
-    throw new RangeError('Expecting a natural number or 0.');
+  if (!isNaturalNumber(count, true)) {
+    throw new Error('Second argument must be a natural number or 0.');
   }
 
   var pathComponents = path.normalize(pathStr).split(path.sep);
