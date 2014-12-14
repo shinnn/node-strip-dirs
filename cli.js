@@ -13,21 +13,22 @@ var argv = require('minimist')(process.argv.slice(2), {
 });
 
 function help() {
-  var chalk = require('chalk');
+  var sumUp = require('sum-up');
+  var yellow = require('chalk').yellow;
+
   var pkg = require('./package.json');
 
   console.log([
-    chalk.cyan(pkg.name) + chalk.gray(' v' + pkg.version),
-    pkg.description + '.',
+    sumUp(pkg),
     '',
     'Usage 1: $ strip-dirs <string> --count(or -c) <number> [--narrow(or -n)]',
     'Usage 2: $ echo <string> | strip-dirs --count(or -c) <number> [--narrow(or -n)]',
     '',
     'Flags:',
-    chalk.yellow('--count,   -c') + '  Number of directories to strip from the path',
-    chalk.yellow('--narrow,  -n') + '  Disallow surplus count of directory level',
-    chalk.yellow('--version, -v') + '  Print version',
-    chalk.yellow('--help,    -h') + '  Print usage information'
+    yellow('--count,   -c') + '  Number of directories to strip from the path',
+    yellow('--narrow,  -n') + '  Disallow surplus count of directory level',
+    yellow('--version, -v') + '  Print version',
+    yellow('--help,    -h') + '  Print usage information'
   ].join('\n'));
 }
 
