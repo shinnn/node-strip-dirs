@@ -74,8 +74,8 @@ test('"strip-dirs" command inside a TTY context', function(t) {
     var cp = spawn('node', [pkg.bin].concat(args), {
       stdio: [process.stdin, null, null]
     });
-    cp.stdout.setEncoding('utf-8');
-    cp.stderr.setEncoding('utf-8');
+    cp.stdout.setEncoding('utf8');
+    cp.stderr.setEncoding('utf8');
     return cp;
   };
 
@@ -84,7 +84,7 @@ test('"strip-dirs" command inside a TTY context', function(t) {
     t.equal(output, '.b\n', 'should remove path components by count.');
   });
 
-  stripDirs(['a/././/b/./', '--c', '1'])
+  stripDirs(['a/././/b/./', '-c', '1'])
   .stdout.on('data', function(output) {
     t.equal(output, 'b\n', 'should use -c as an alias of --count.');
   });
@@ -107,7 +107,7 @@ test('"strip-dirs" command inside a TTY context', function(t) {
     t.ok(/Usage/.test(output), 'should print help with `--help` flag.');
   });
 
-  stripDirs(['--h'])
+  stripDirs(['-h'])
   .stdout.on('data', function(output) {
     t.ok(/Usage/.test(output), 'should use -h as an alias of --help.');
   });
@@ -171,9 +171,7 @@ test('"strip-dirs" command outside a TTY context', function(t) {
   t.plan(3);
 
   var stripDirsPipe = function(args) {
-    return spawn('node', [pkg.bin].concat(args), {
-      stdio: ['pipe', null, null]
-    });
+    return spawn('node', [pkg.bin].concat(args), {stdio: ['pipe', null, null]});
   };
 
   var cp = stripDirsPipe(['--count', '1']);
