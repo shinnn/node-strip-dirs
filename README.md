@@ -1,10 +1,10 @@
 # strip-dirs 
 
-[![Build Status](https://travis-ci.org/shinnn/node-strip-dirs.svg?branch=master)](https://travis-ci.org/shinnn/node-strip-dirs)
-[![Build status](https://ci.appveyor.com/api/projects/status/pr5edbtg59f6xfgn)](https://ci.appveyor.com/project/ShinnosukeWatanabe/node-strip-dirs)
-[![Coverage Status](https://img.shields.io/coveralls/shinnn/node-strip-dirs.svg)](https://coveralls.io/r/shinnn/node-strip-dirs)
-[![Dependency Status](https://david-dm.org/shinnn/node-strip-dirs.svg)](https://david-dm.org/shinnn/node-strip-dirs)
-[![devDependency Status](https://david-dm.org/shinnn/node-strip-dirs/dev-status.svg)](https://david-dm.org/shinnn/node-strip-dirs#info=devDependencies)
+[![Build Status](https://img.shields.io/travis/shinnn/node-strip-dirs.svg?style=flat)](https://travis-ci.org/shinnn/node-strip-dirs)
+[![Build status](https://ci.appveyor.com/api/projects/status/pr5edbtg59f6xfgn?svg=true)](https://ci.appveyor.com/project/ShinnosukeWatanabe/node-strip-dirs)
+[![Coverage Status](https://img.shields.io/coveralls/shinnn/node-strip-dirs.svg?style=flat)](https://coveralls.io/r/shinnn/node-strip-dirs)
+[![Dependency Status](https://david-dm.org/shinnn/node-strip-dirs.svg?style=flat)](https://david-dm.org/shinnn/node-strip-dirs)
+[![devDependency Status](https://david-dm.org/shinnn/node-strip-dirs/dev-status.svg?style=flat)](https://david-dm.org/shinnn/node-strip-dirs#info=devDependencies)
 
 Remove leading directory components from a path, like [tar(1)](http://linuxcommand.org/man_pages/tar1.html)'s `--strip-components` option
 
@@ -18,9 +18,9 @@ stripDirs('foo/bar/baz', 999); //=> 'baz'
 
 ## Installation
 
-[![NPM version](https://badge.fury.io/js/strip-dirs.svg)](https://www.npmjs.org/package/strip-dirs)
+[![NPM version](https://img.shields.io/npm/v/strip-dirs.svg?style=flat)](https://www.npmjs.com/package/strip-dirs)
 
-[Install with npm](https://www.npmjs.org/doc/cli/npm-install.html)
+[Use npm.](https://docs.npmjs.com/cli/install)
 
 ```sh
 npm install --save strip-dirs
