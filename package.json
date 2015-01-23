@@ -7,14 +7,13 @@
     "name": "Shinnosuke Watanabe",
     "url": "https://github.com/shinnn"
   },
-  "bin": "./cli.js",
+  "bin": "cli.js",
   "files": [
     "cli.js",
-    "index.js",
-    "LICENSE"
+    "index.js"
   ],
   "scripts": {
-    "pretest": "eslint *.js & jscs *.js",
+    "pretest": "jscs *.js && eslint *.js",
     "test": "node test.js | tap-spec",
     "coverage": "istanbul cover test.js",
     "coveralls": "${npm_package_scripts_coverage} && istanbul-coveralls"
@@ -34,19 +33,19 @@
   ],
   "dependencies": {
     "chalk": "^0.5.1",
-    "get-stdin": "^3.0.2",
+    "get-stdin": "^4.0.1",
     "is-absolute": "^0.1.5",
     "is-natural-number": "^1.0.0",
     "minimist": "^1.1.0",
     "sum-up": "^1.0.0"
   },
   "devDependencies": {
-    "eslint": "^0.10.2",
+    "eslint": "^0.12.0",
     "istanbul": "^0.3.5",
     "istanbul-coveralls": "^1.0.1",
-    "jscs": "^1.8.1",
-    "tap-spec": "^2.1.1",
-    "tape": "^3.0.3"
+    "jscs": "^1.10.0",
+    "tap-spec": "^2.2.0",
+    "tape": "^3.4.0"
   },
   "jscsConfig": {
     "preset": "google",
