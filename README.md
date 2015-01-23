@@ -98,6 +98,6 @@ echo <string> | strip-dirs --count(or -c) <number> [--narrow(or -n)]
 
 ## License
 
-Copyright (c) 2014 [Shinnosuke Watanabe](https://github.com/shinnn)
+Copyright (c) [Shinnosuke Watanabe](https://github.com/shinnn)
 
 Licensed under [the MIT License](./LICENSE).
