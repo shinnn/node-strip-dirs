@@ -13,18 +13,26 @@ module.exports = function stripDirs(pathStr, count, option) {
   option = option || {narrow: false};
 
   if (arguments.length < 2) {
-    throw new Error('Expecting two arguments and more. (path, count[, option])');
+    throw new Error('strip-dirs requires two arguments and more. (path, count[, option])');
   }
 
   if (typeof pathStr !== 'string') {
-    throw new TypeError(pathStr + ' is not a string. First argument must be a path string.');
+    throw new TypeError(
+      pathStr +
+      ' is not a string. First argument to strip-dirs must be a path string.'
+    );
   }
   if (isAbsolutePath(pathStr)) {
-    throw new TypeError(pathStr + ' is an absolute path. A relative path required.');
+    throw new TypeError(
+      pathStr +
+      ' is an absolute path. strip-dirs requires a relative path.'
+    );
   }
 
   if (!isNaturalNumber(count, true)) {
-    throw new Error('Second argument must be a natural number or 0.');
+    throw new Error(
+      'Second argument to strip-dirs must be a natural number or 0.'
+    );
   }
 
   var pathComponents = path.normalize(pathStr).split(path.sep);

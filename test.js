@@ -7,58 +7,84 @@ var pkg = require('./package.json');
 var test = require('tape');
 
 test('stripDirs()', function(t) {
-  t.plan(13);
+  t.plan(14);
 
   var stripDirs = require('./');
 
+  t.equal(stripDirs.name, 'stripDirs', 'should have a function name.');
+
   t.equal(
-    stripDirs('a/b.c', 1), 'b.c',
+    stripDirs('a/b.c', 1),
+    'b.c',
     'should remove path components by count.'
   );
+
   t.equal(
-    stripDirs('./a/b', 1), 'b',
+    stripDirs('./a/b', 1),
+    'b',
     'should remove path components taking care of leading `./`.'
   );
+
   t.equal(
-    stripDirs('a/../', 1), '.',
+    stripDirs('a/../', 1),
+    '.',
     'should return current directory when the path is current directory.'
   );
+
   t.equal(
-    stripDirs('a/././/b/./', 1), 'b',
+    stripDirs('a/././/b/./', 1),
+    'b',
     'should normalize the path taking care of redundant `./` and `/`.'
   );
+
   t.equal(
-    stripDirs('a/b/', 0), path.normalize('a/b'),
+    stripDirs('a/b/', 0),
+    path.normalize('a/b'),
     'should not remove path components when the second argument is `0`.'
   );
+
   t.equal(
-    stripDirs('a/b', 2), 'b',
+    stripDirs('a/b', 2),
+    'b',
     'should keep the last path component.'
   );
+
   t.throws(
-    stripDirs.bind(null, 'a/b'), /Error.*Expecting two arguments/,
+    stripDirs.bind(null, 'a/b'),
+    /Error.*strip-dirs requires two arguments and more/,
     'should throw an error when it takes less than two arguments.'
   );
+
   t.throws(
-    stripDirs.bind(null, ['a/b'], 1), /TypeError.*is not a string/,
+    stripDirs.bind(null, ['a/b'], 1),
+    /TypeError.*is not a string/,
     'should throw a type error when the first argument is not a string.'
   );
+
   t.throws(
-    stripDirs.bind(null, '/a/b', 1), /Error.*relative path required/,
+    stripDirs.bind(null, '/a/b', 1),
+    /Error.* is an absolute path. strip-dirs requires a relative path\./,
     'should throw an error when the path is absolute path.'
   );
+
   t.throws(
-    stripDirs.bind(null, 'C:/a', 1), /Error.*relative path required/,
+    stripDirs.bind(null, 'C:/a', 1),
+    /Error.* is an absolute path. strip-dirs requires a relative path\./,
     'should throw an error when the path is Windows absolute path.'
   );
+
   t.throws(
-    stripDirs.bind(null, 'a/b', 1.5), /Error.*must be a natural number/,
+    stripDirs.bind(null, 'a/b', 1.5),
+    /Error.*must be a natural number/,
     'should throw an error when the second argument is not an integer.'
   );
+
   t.throws(
-    stripDirs.bind(null, 'a/b', -1), /Error.*must be a natural number/,
+    stripDirs.bind(null, 'a/b', -1),
+    /Error.*must be a natural number/,
     'should throw an error when the second argument is a negative number.'
   );
+
   t.throws(
     stripDirs.bind(null, 'a/b', 2, {narrow: true}), /RangeError.*Cannot strip/,
     'should accept `narrow` option.'
