@@ -21,14 +21,14 @@ stripDirs('foo/bar/baz', 999); //=> 'baz'
 
 [Use npm](https://docs.npmjs.com/cli/install).
 
-```sh
+```
 npm install --save strip-dirs
 ```
 
 ## API
 
 ```javascript
-var stripDirs = require('strip-dirs');
+const stripDirs = require('strip-dirs');
 ```
 
 ### stripDirs(*path*, *count* [, *option*])
@@ -41,7 +41,7 @@ Return: `String`
 It removes directory components from the beginning of the *path* by *count*.
 
 ```javascript
-var stripDirs = require('strip-dirs');
+const stripDirs = require('strip-dirs');
 
 stripDirs('foo/bar', 1); //=> 'bar'
 stripDirs('foo/bar/baz', 2); //=> 'bar'
@@ -70,33 +70,33 @@ stripDirs('foo/bar/baz', 9999, {narrow: true}); // throws an error
 
 ## CLI
 
-You can use this module as `strip-dirs` command by installing it globally.
+You can use this module as `strip-dirs` command by installing it [globally](https://docs.npmjs.com/files/folders#global-installation).
 
-```sh
+```
 npm install -g strip-dirs
 ```
 
 ### Usage
 
-```sh
+```
 strip-dirs <string> --count(or -c) <number> [--narrow(or -n)]
 ```
 
 Or, use with pipe(`|`):
 
-```sh
+```
 echo <string> | strip-dirs --count(or -c) <number> [--narrow(or -n)]
 ```
 
 ### Flags
 
-```sh
+```
 --count,  -c: Number of directories to strip from the path
 --narrow, -n: Disallow surplus count of directory level
 ```
 
 ## License
 
-Copyright (c) [Shinnosuke Watanabe](https://github.com/shinnn)
+Copyright (c) 2014 - 2015 [Shinnosuke Watanabe](https://github.com/shinnn)
 
 Licensed under [the MIT License](./LICENSE).
