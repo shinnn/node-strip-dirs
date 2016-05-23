@@ -4,8 +4,8 @@
 [![Build Status](https://img.shields.io/travis/shinnn/node-strip-dirs.svg)](https://travis-ci.org/shinnn/node-strip-dirs)
 [![Build status](https://ci.appveyor.com/api/projects/status/pr5edbtg59f6xfgn?svg=true)](https://ci.appveyor.com/project/ShinnosukeWatanabe/node-strip-dirs)
 [![Coverage Status](https://img.shields.io/coveralls/shinnn/node-strip-dirs.svg)](https://coveralls.io/r/shinnn/node-strip-dirs)
-[![Dependency Status](https://img.shields.io/david/shinnn/node-strip-dirs.svg?label=deps)](https://david-dm.org/shinnn/node-strip-dirs)
-[![devDependency Status](https://img.shields.io/david/dev/shinnn/node-strip-dirs.svg?label=devDeps)](https://david-dm.org/shinnn/node-strip-dirs#info=devDependencies)
+[![Dependency Status](https://david-dm.org/shinnn/node-strip-dirs.svg)](https://david-dm.org/shinnn/node-strip-dirs)
+[![devDependency Status](https://david-dm.org/shinnn/node-strip-dirs/dev-status.svg)](https://david-dm.org/shinnn/node-strip-dirs#info=devDependencies)
 
 Remove leading directory components from a path, like [tar(1)](http://linuxcommand.org/man_pages/tar1.html)'s `--strip-components` option
 
