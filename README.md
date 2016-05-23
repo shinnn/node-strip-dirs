@@ -68,33 +68,6 @@ stripDirs('foo/bar/baz', 9999); //=> 'baz'
 stripDirs('foo/bar/baz', 9999, {narrow: true}); // throws an error
 ```
 
-## CLI
-
-You can use this module as `strip-dirs` command by installing it [globally](https://docs.npmjs.com/files/folders#global-installation).
-
-```
-npm install -g strip-dirs
-```
-
-### Usage
-
-```
-strip-dirs <string> --count(or -c) <number> [--narrow(or -n)]
-```
-
-Or, use with pipe(`|`):
-
-```
-echo <string> | strip-dirs --count(or -c) <number> [--narrow(or -n)]
-```
-
-### Flags
-
-```
---count,  -c: Number of directories to strip from the path
---narrow, -n: Disallow surplus count of directory level
-```
-
 ## License
 
 Copyright (c) 2014 - 2016 [Shinnosuke Watanabe](https://github.com/shinnn)

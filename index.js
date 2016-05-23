@@ -20,10 +20,7 @@ module.exports = function stripDirs(pathStr, count, option) {
   }
 
   if (path.posix.isAbsolute(pathStr) || path.win32.isAbsolute(pathStr)) {
-    throw new TypeError(
-      util.inspect(pathStr) +
-      ' is an absolute path. strip-dirs requires a relative path.'
-    );
+    throw new TypeError(`${pathStr} is an absolute path. strip-dirs requires a relative path.`);
   }
 
   if (!isNaturalNumber(count, {includeZero: true})) {
