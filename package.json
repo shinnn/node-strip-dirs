@@ -11,9 +11,8 @@
   ],
   "scripts": {
     "pretest": "eslint --config @shinnn/cli --ignore-path .gitignore .",
-    "test": "node test.js | tap-spec",
-    "coverage": "istanbul cover test.js",
-    "coveralls": "${npm_package_scripts_coverage} && istanbul-coveralls"
+    "test": "node --strong_mode --throw-deprecation --track-heap-objects test.js | tap-spec",
+    "coverage": "node --strong_mode node_modules/.bin/istanbul cover test.js"
   },
   "license": "MIT",
   "keywords": [

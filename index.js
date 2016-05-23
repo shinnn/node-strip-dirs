@@ -4,38 +4,37 @@
 */
 'use strict';
 
-var path = require('path');
+const path = require('path');
+const util = require('util');
 
-var isAbsolutePath = require('is-absolute');
-var isNaturalNumber = require('is-natural-number');
+const isNaturalNumber = require('is-natural-number');
 
 module.exports = function stripDirs(pathStr, count, option) {
   option = option || {narrow: false};
 
-  if (arguments.length < 2) {
-    throw new Error('strip-dirs requires two arguments and more. (path, count[, option])');
-  }
-
   if (typeof pathStr !== 'string') {
     throw new TypeError(
-      pathStr +
+      util.inspect(pathStr) +
       ' is not a string. First argument to strip-dirs must be a path string.'
     );
   }
-  if (isAbsolutePath(pathStr)) {
+
+  if (path.posix.isAbsolute(pathStr) || path.win32.isAbsolute(pathStr)) {
     throw new TypeError(
-      pathStr +
+      util.inspect(pathStr) +
       ' is an absolute path. strip-dirs requires a relative path.'
     );
   }
 
-  if (!isNaturalNumber(count, true)) {
+  if (!isNaturalNumber(count, {includeZero: true})) {
     throw new Error(
-      'Second argument to strip-dirs must be a natural number or 0.'
+      'The Second argument of strip-dirs must be a natural number or 0, but received ' +
+      util.inspect(count) +
+      '.'
     );
   }
 
-  var pathComponents = path.normalize(pathStr).split(path.sep);
+  const pathComponents = path.normalize(pathStr).split(path.sep);
   if (pathComponents.length > 1 && pathComponents[0] === '.') {
     pathComponents.shift();
   }

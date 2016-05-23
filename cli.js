@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-var argv = require('minimist')(process.argv.slice(2), {
+const argv = require('minimist')(process.argv.slice(2), {
   alias: {
     c: 'count',
     n: 'narrow',
@@ -13,10 +13,10 @@ var argv = require('minimist')(process.argv.slice(2), {
 });
 
 function help() {
-  var sumUp = require('sum-up');
-  var yellow = require('chalk').yellow;
+  const sumUp = require('sum-up');
+  const yellow = require('chalk').yellow;
 
-  var pkg = require('./package.json');
+  const pkg = require('./package.json');
 
   console.log([
     sumUp(pkg),
@@ -33,9 +33,7 @@ function help() {
 }
 
 function printErr(msg) {
-  process.stderr.write(msg + '\n', function() {
-    process.exit(1);
-  });
+  process.stderr.write(msg + '\n', () => process.exit(1));
 }
 
 function run(path) {
@@ -44,7 +42,7 @@ function run(path) {
       if (typeof argv.count !== 'number') {
         printErr('--count (or -c) option must be a number.');
       } else {
-        var stripDirs = require('./');
+        const stripDirs = require('.');
         try {
           console.log(stripDirs(path.trim(), argv.count, {narrow: argv.narrow}));
         } catch (e) {

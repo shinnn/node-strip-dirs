@@ -10,7 +10,7 @@
 Remove leading directory components from a path, like [tar(1)](http://linuxcommand.org/man_pages/tar1.html)'s `--strip-components` option
 
 ```javascript
-var stripDirs = require('strip-dirs');
+const stripDirs = require('strip-dirs');
 
 stripDirs('foo/bar/baz', 1); //=> 'bar/baz'
 stripDirs('foo/bar/baz', 2); //=> 'baz'
