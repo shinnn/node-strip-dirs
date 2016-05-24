@@ -53,19 +53,19 @@ stripDirs('/foo/bar', 1) // throw an error because the path is an absolute path
 
 If you want to remove all directory components certainly, use [`path.basename`](http://nodejs.org/api/path.html#path_path_basename_p_ext) instead of this module.
 
-#### option.narrow
+#### option.disallowOverflow
 
 Type: `Boolean`  
 Default: `false`
 
 By default, it keeps the last path component when path components are fewer than the *count*.
 
-If this option is enabled, it throws an error in such case.
+If this option is enabled, it throws an error in this situation.
 
 ```javascript
 stripDirs('foo/bar/baz', 9999); //=> 'baz'
 
-stripDirs('foo/bar/baz', 9999, {narrow: true}); // throws an error
+stripDirs('foo/bar/baz', 9999, {disallowOverflow: true}); // throws an range error
 ```
 
 ## License

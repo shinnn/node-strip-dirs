@@ -5,8 +5,6 @@ const path = require('path');
 const test = require('tape');
 
 test('stripDirs()', t => {
-  t.plan(13);
-
   const stripDirs = require('.');
 
   t.strictEqual(stripDirs.name, 'stripDirs', 'should have a function name.');
@@ -49,37 +47,43 @@ test('stripDirs()', t => {
 
   t.throws(
     () => stripDirs(['a/b'], 1),
-    /TypeError.*\[ 'a\/b' \] is not a string/,
+    /^TypeError.*\[ 'a\/b' \] is not a string/,
     'should throw a type error when the first argument is not a string.'
   );
 
   t.throws(
     () => stripDirs('/a/b', 1),
-    /Error.*\/a\/b is an absolute path. strip-dirs requires a relative path\./,
+    /^Error.*\/a\/b is an absolute path. strip-dirs requires a relative path\./,
     'should throw an error when the path is absolute path.'
   );
 
   t.throws(
     () => stripDirs('C:/a', 1),
-    /Error.*C:\/a is an absolute path. strip-dirs requires a relative path\./,
+    /^Error.*C:\/a is an absolute path. strip-dirs requires a relative path\./,
     'should throw an error when the path is Windows absolute path.'
   );
 
   t.throws(
     () => stripDirs('a/b', 1.5),
-    /Error.*must be a natural number or 0, but received 1\.5/,
+    /^Error.*must be a natural number or 0, but received 1\.5/,
     'should throw an error when the second argument is not an integer.'
   );
 
   t.throws(
     () => stripDirs('a/b', -1),
-    /Error.*must be a natural number or 0, but received -1/,
+    /^Error.*must be a natural number or 0, but received -1/,
     'should throw an error when the second argument is a negative number.'
   );
 
   t.throws(
-    () => stripDirs('a/b', 2, {narrow: true}),
-    /RangeError.*Cannot strip more directories than there are/,
+    () => stripDirs('a/b', Number.MAX_SAFE_INTEGER, {disallowOverflow: new Buffer('true')}),
+    /^TypeError.*<Buffer .*> is neither true nor false\. `disallowOverflow` option must be a Boolean value/,
+    'should throw an error when the second argsdsda negative number.'
+  );
+
+  t.throws(
+    () => stripDirs('a/b', 2, {disallowOverflow: true}),
+    /^RangeError.*Cannot strip more directories than there are/,
     'should accept `narrow` option.'
   );
 
