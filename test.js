@@ -2,11 +2,10 @@
 
 const path = require('path');
 
+const stripDirs = require('.');
 const test = require('tape');
 
 test('stripDirs()', t => {
-  const stripDirs = require('.');
-
   t.strictEqual(stripDirs.name, 'stripDirs', 'should have a function name.');
 
   t.strictEqual(
@@ -85,6 +84,12 @@ test('stripDirs()', t => {
     () => stripDirs('a/b', 2, {disallowOverflow: true}),
     /^RangeError.*Cannot strip more directories than there are/,
     'should accept `narrow` option.'
+  );
+
+  t.throws(
+    () => stripDirs(),
+    /^TypeError.*undefined is not a string\. /,
+    'should throw a type error when it takes no arguments.'
   );
 
   t.end();
