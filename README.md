@@ -51,7 +51,7 @@ stripDirs('foo/bar', 0); //=> 'foo/bar'
 stripDirs('/foo/bar', 1) // throw an error because the path is an absolute path
 ```
 
-If you want to remove all directory components certainly, use [`path.basename`](http://nodejs.org/api/path.html#path_path_basename_p_ext) instead of this module.
+If you want to remove all directory components certainly, use [`path.basename`](https://nodejs.org/api/path.html#path_path_basename_path_ext) instead of this module.
 
 #### option.disallowOverflow
 
