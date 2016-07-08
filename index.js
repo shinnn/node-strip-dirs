@@ -10,8 +10,6 @@ const util = require('util');
 const isNaturalNumber = require('is-natural-number');
 
 module.exports = function stripDirs(pathStr, count, option) {
-  option = option || {disallowOverflow: false};
-
   if (typeof pathStr !== 'string') {
     throw new TypeError(
       util.inspect(pathStr) +
@@ -31,11 +29,29 @@ module.exports = function stripDirs(pathStr, count, option) {
     );
   }
 
-  if ('disallowOverflow' in option && typeof option.disallowOverflow !== 'boolean') {
-    throw new TypeError(
-      util.inspect(option.disallowOverflow) +
-      ' is neither true nor false. `disallowOverflow` option must be a Boolean value.'
-    );
+  if (option) {
+    if (typeof option !== 'object') {
+      throw new TypeError(
+        util.inspect(option) +
+        ' is not an object. Expected an object with a boolean `disallowOverflow` property.'
+      );
+    }
+
+    if (Array.isArray(option)) {
+      throw new TypeError(
+        util.inspect(option) +
+        ' is an array. Expected an object with a boolean `disallowOverflow` property.'
+      );
+    }
+
+    if ('disallowOverflow' in option && typeof option.disallowOverflow !== 'boolean') {
+      throw new TypeError(
+        util.inspect(option.disallowOverflow) +
+        ' is neither true nor false. `disallowOverflow` option must be a Boolean value.'
+      );
+    }
+  } else {
+    option = {disallowOverflow: false};
   }
 
   const pathComponents = path.normalize(pathStr).split(path.sep);

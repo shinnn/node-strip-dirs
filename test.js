@@ -75,9 +75,21 @@ test('stripDirs()', t => {
   );
 
   t.throws(
+    () => stripDirs('a/b', Number.MAX_SAFE_INTEGER, function foo() {}),
+    /^TypeError.*\[Function: foo\] is not an object\. Expected an object with a boolean `disallowOverflow` property/,
+    'should throw a type error when the third argument is not an object.'
+  );
+
+  t.throws(
+    () => stripDirs('a/b', Number.MAX_SAFE_INTEGER, [NaN]),
+    /^TypeError.*\[ NaN \] is an array\. Expected an object with a boolean `disallowOverflow` property/,
+    'should throw a type error when the third argument is an array.'
+  );
+
+  t.throws(
     () => stripDirs('a/b', Number.MAX_SAFE_INTEGER, {disallowOverflow: new Buffer('true')}),
     /^TypeError.*<Buffer .*> is neither true nor false\. `disallowOverflow` option must be a Boolean value/,
-    'should throw an error when the second argsdsda negative number.'
+    'should throw a type error when `disallowOverflow` option is not a Boolean.'
   );
 
   t.throws(
