@@ -46,7 +46,7 @@ test('stripDirs()', t => {
 
   t.throws(
     () => stripDirs(['a/b'], 1),
-    /^TypeError.*\[ 'a\/b' \] is not a string/,
+    /^TypeError.*\[ 'a\/b' ] is not a string/,
     'should throw a type error when the first argument is not a string.'
   );
 
@@ -76,13 +76,13 @@ test('stripDirs()', t => {
 
   t.throws(
     () => stripDirs('a/b', Number.MAX_SAFE_INTEGER, function foo() {}),
-    /^TypeError.*\[Function: foo\] is not an object\. Expected an object with a boolean `disallowOverflow` property/,
+    /^TypeError.*\[Function: foo] is not an object\. Expected an object with a boolean `disallowOverflow` property/,
     'should throw a type error when the third argument is not an object.'
   );
 
   t.throws(
     () => stripDirs('a/b', Number.MAX_SAFE_INTEGER, [NaN]),
-    /^TypeError.*\[ NaN \] is an array\. Expected an object with a boolean `disallowOverflow` property/,
+    /^TypeError.*\[ NaN ] is an array\. Expected an object with a boolean `disallowOverflow` property/,
     'should throw a type error when the third argument is an array.'
   );
 
