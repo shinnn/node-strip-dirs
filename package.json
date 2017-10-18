@@ -1,6 +1,6 @@
 {
   "name": "strip-dirs",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Remove leading directory components from a path, like tar's --strip-components option",
   "repository": "shinnn/node-strip-dirs",
   "author": "Shinnosuke Watanabe (https://github.com/shinnn)",
