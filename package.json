@@ -12,7 +12,7 @@
     "test": "node --throw-deprecation --track-heap-objects test.js | tap-spec",
     "coverage": "istanbul cover test.js"
   },
-  "license": "MIT",
+  "license": "ISC",
   "keywords": [
     "filepath",
     "file-path",

@@ -1,13 +1,11 @@
-# strip-dirs 
+# strip-dirs
 
-[![NPM version](https://img.shields.io/npm/v/strip-dirs.svg)](https://www.npmjs.com/package/strip-dirs)
+[![npm version](https://img.shields.io/npm/v/strip-dirs.svg)](https://www.npmjs.com/package/strip-dirs)
 [![Build Status](https://img.shields.io/travis/shinnn/node-strip-dirs.svg)](https://travis-ci.org/shinnn/node-strip-dirs)
 [![Build status](https://ci.appveyor.com/api/projects/status/pr5edbtg59f6xfgn?svg=true)](https://ci.appveyor.com/project/ShinnosukeWatanabe/node-strip-dirs)
 [![Coverage Status](https://img.shields.io/coveralls/shinnn/node-strip-dirs.svg)](https://coveralls.io/r/shinnn/node-strip-dirs)
-[![Dependency Status](https://david-dm.org/shinnn/node-strip-dirs.svg)](https://david-dm.org/shinnn/node-strip-dirs)
-[![devDependency Status](https://david-dm.org/shinnn/node-strip-dirs/dev-status.svg)](https://david-dm.org/shinnn/node-strip-dirs#info=devDependencies)
 
-Remove leading directory components from a path, like [tar(1)](http://linuxcommand.org/man_pages/tar1.html)'s `--strip-components` option
+Remove leading directory components from a path, like [tar(1)](http://linuxcommand.org/lc3_man_pages/tar1.html)'s `--strip-components` option
 
 ```javascript
 const stripDirs = require('strip-dirs');
@@ -19,10 +17,10 @@ stripDirs('foo/bar/baz', 999); //=> 'baz'
 
 ## Installation
 
-[Use npm](https://docs.npmjs.com/cli/install).
+[Use]((https://docs.npmjs.com/cli/install)) [npm](https://docs.npmjs.com/getting-started/what-is-npm).
 
 ```
-npm install --save strip-dirs
+npm install strip-dirs
 ```
 
 ## API
@@ -33,10 +31,10 @@ const stripDirs = require('strip-dirs');
 
 ### stripDirs(*path*, *count* [, *option*])
 
-*path*: `String` (A relative path)  
-*count*: `Number` (0, 1, 2, ...)  
+*path*: `string` (A relative path)  
+*count*: `integer` (>= `0`)  
 *option*: `Object`  
-Return: `String`
+Return: `string`
 
 It removes directory components from the beginning of the *path* by *count*.
 
@@ -55,7 +53,7 @@ If you want to remove all directory components certainly, use [`path.basename`](
 
 #### option.disallowOverflow
 
-Type: `Boolean`  
+Type: `boolean`  
 Default: `false`
 
 By default, it keeps the last path component when path components are fewer than the *count*.
@@ -70,6 +68,4 @@ stripDirs('foo/bar/baz', 9999, {disallowOverflow: true}); // throws an range err
 
 ## License
 
-Copyright (c) 2014 - 2016 [Shinnosuke Watanabe](https://github.com/shinnn)
-
-Licensed under [the MIT License](./LICENSE).
+[ISC License](./LICENSE) © 2017 Shinnosuke Watanabe

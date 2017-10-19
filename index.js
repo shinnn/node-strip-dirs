@@ -1,7 +1,3 @@
-/*!
- * strip-dirs | MIT (c) Shinnosuke Watanabe
- * https://github.com/shinnn/node-strip-dirs
-*/
 'use strict';
 
 const path = require('path');
