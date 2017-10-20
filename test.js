@@ -1,40 +1,38 @@
 'use strict';
 
-const path = require('path');
+const {normalize} = require('path');
 
 const stripDirs = require('.');
 const test = require('tape');
 
 test('stripDirs()', t => {
-  t.strictEqual(stripDirs.name, 'stripDirs', 'should have a function name.');
-
-  t.strictEqual(
+  t.equal(
     stripDirs('a/b.c', 1),
     'b.c',
     'should remove path components by count.'
   );
 
-  t.strictEqual(
+  t.equal(
     stripDirs('./a/b', 1),
     'b',
     'should remove path components taking care of leading `./`.'
   );
 
-  t.strictEqual(
+  t.equal(
     stripDirs('a/../', 1),
     '.',
     'should return current directory when the path is current directory.'
   );
 
-  t.strictEqual(
+  t.equal(
     stripDirs('a/././/b/./', 1),
     'b',
     'should normalize the path taking care of redundant `./` and `/`.'
   );
 
-  t.strictEqual(
+  t.equal(
     stripDirs('a/b/', 0),
-    path.normalize('a/b'),
+    normalize('a/b'),
     'should not remove path components when the second argument is `0`.'
   );
 
@@ -87,7 +85,7 @@ test('stripDirs()', t => {
   );
 
   t.throws(
-    () => stripDirs('a/b', Number.MAX_SAFE_INTEGER, {disallowOverflow: new Buffer('true')}),
+    () => stripDirs('a/b', Number.MAX_SAFE_INTEGER, {disallowOverflow: Buffer.from('true')}),
     /^TypeError.*<Buffer .*> is neither true nor false\. `disallowOverflow` option must be a Boolean value/,
     'should throw a type error when `disallowOverflow` option is not a Boolean.'
   );
