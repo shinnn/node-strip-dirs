@@ -9,8 +9,7 @@
   ],
   "scripts": {
     "pretest": "eslint --fix --format=codeframe index.js test.js",
-    "test": "node --throw-deprecation --track-heap-objects test.js",
-    "coverage": "istanbul cover test.js"
+    "test": "istanbul cover test.js"
   },
   "license": "ISC",
   "keywords": [
@@ -29,7 +28,6 @@
     "@shinnn/eslint-config-node": "^4.0.2",
     "eslint": "^4.9.0",
     "istanbul": "^0.4.5",
-    "istanbul-coveralls": "^1.0.3",
     "tape": "^4.8.0"
   },
   "eslintConfig": {

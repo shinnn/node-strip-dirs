@@ -73,8 +73,8 @@ test('stripDirs()', t => {
   );
 
   t.throws(
-    () => stripDirs('a/b', Number.MAX_SAFE_INTEGER, function foo() {}),
-    /^TypeError.*\[Function: foo] is not an object\. Expected an object with a boolean `disallowOverflow` property/,
+    () => stripDirs('a/b', Number.MAX_SAFE_INTEGER, Map),
+    /^TypeError.*\[Function: Map] is not an object\. Expected an object with a boolean `disallowOverflow` property/,
     'should throw a type error when the third argument is not an object.'
   );
 
