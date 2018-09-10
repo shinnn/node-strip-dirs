@@ -1,17 +1,26 @@
 'use strict';
 
-const path = require('path');
+const {join, normalize, sep, posix: {isAbsolute: posixIsAbsolute}, win32: {isAbsolute: win32IsAbsolute}} = require('path');
 const util = require('util');
 
 const isNaturalNumber = require('is-natural-number');
 
-module.exports = function stripDirs(pathStr, count, option) {
-	if (typeof pathStr !== 'string') {
-		throw new TypeError(`${util.inspect(pathStr)
-		} is not a string. First argument to strip-dirs must be a path string.`);
+module.exports = function stripDirs(...args) {
+	const argLen = args.length;
+
+	if (argLen !== 2 && argLen !== 3) {
+		throw new RangeError(`Expected 2 or 3 arguments (<string>, <integer>[, <Object>]), but got ${
+			argLen === 0 ? 'no' : argLen
+		} arguments.`);
 	}
 
-	if (path.posix.isAbsolute(pathStr) || path.win32.isAbsolute(pathStr)) {
+	const [pathStr, count, option = {disallowOverflow: false}] = args;
+
+	if (typeof pathStr !== 'string') {
+		throw new TypeError(`${util.inspect(pathStr)} is not a string. First argument to strip-dirs must be a path string.`);
+	}
+
+	if (posixIsAbsolute(pathStr) || win32IsAbsolute(pathStr)) {
 		throw new Error(`${pathStr} is an absolute path. strip-dirs requires a relative path.`);
 	}
 
@@ -21,7 +30,7 @@ module.exports = function stripDirs(pathStr, count, option) {
 		}.`);
 	}
 
-	if (option) {
+	if (argLen === 3) {
 		if (typeof option !== 'object') {
 			throw new TypeError(`${util.inspect(option)
 			} is not an object. Expected an object with a boolean \`disallowOverflow\` property.`);
@@ -36,11 +45,9 @@ module.exports = function stripDirs(pathStr, count, option) {
 			throw new TypeError(`${util.inspect(option.disallowOverflow)
 			} is neither true nor false. \`disallowOverflow\` option must be a Boolean value.`);
 		}
-	} else {
-		option = {disallowOverflow: false};
 	}
 
-	const pathComponents = path.normalize(pathStr).split(path.sep);
+	const pathComponents = normalize(pathStr).split(sep);
 
 	if (pathComponents.length > 1 && pathComponents[0] === '.') {
 		pathComponents.shift();
@@ -51,8 +58,8 @@ module.exports = function stripDirs(pathStr, count, option) {
 			throw new RangeError('Cannot strip more directories than there are.');
 		}
 
-		count = pathComponents.length - 1;
+		return normalize(pathComponents[pathComponents.length - 1]);
 	}
 
-	return path.join.apply(null, pathComponents.slice(count));
+	return join(...pathComponents.slice(count));
 };

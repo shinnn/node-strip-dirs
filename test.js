@@ -44,61 +44,67 @@ test('stripDirs()', t => {
 
 	t.throws(
 		() => stripDirs(['a/b'], 1),
-		/^TypeError.*\[ 'a\/b' ] is not a string/,
+		/^TypeError.*\[ 'a\/b' \] is not a string/u,
 		'should throw a type error when the first argument is not a string.'
 	);
 
 	t.throws(
 		() => stripDirs('/a/b', 1),
-		/^Error.*\/a\/b is an absolute path. strip-dirs requires a relative path\./,
+		/^Error.*\/a\/b is an absolute path\. strip-dirs requires a relative path\./u,
 		'should throw an error when the path is absolute path.'
 	);
 
 	t.throws(
 		() => stripDirs('C:/a', 1),
-		/^Error.*C:\/a is an absolute path. strip-dirs requires a relative path\./,
+		/^Error.*C:\/a is an absolute path\. strip-dirs requires a relative path\./u,
 		'should throw an error when the path is Windows absolute path.'
 	);
 
 	t.throws(
 		() => stripDirs('a/b', 1.5),
-		/^Error.*must be a natural number or 0, but received 1\.5/,
+		/^Error.*must be a natural number or 0, but received 1\.5/u,
 		'should throw an error when the second argument is not an integer.'
 	);
 
 	t.throws(
 		() => stripDirs('a/b', -1),
-		/^Error.*must be a natural number or 0, but received -1/,
+		/^Error.*must be a natural number or 0, but received -1/u,
 		'should throw an error when the second argument is a negative number.'
 	);
 
 	t.throws(
 		() => stripDirs('a/b', Number.MAX_SAFE_INTEGER, Map),
-		/^TypeError.*\[Function: Map] is not an object\. Expected an object with a boolean `disallowOverflow` property/,
+		/^TypeError.*\[Function: Map\] is not an object\. Expected an object with a boolean `disallowOverflow` property/u,
 		'should throw a type error when the third argument is not an object.'
 	);
 
 	t.throws(
 		() => stripDirs('a/b', Number.MAX_SAFE_INTEGER, [NaN]),
-		/^TypeError.*\[ NaN ] is an array\. Expected an object with a boolean `disallowOverflow` property/,
+		/^TypeError.*\[ NaN \] is an array\. Expected an object with a boolean `disallowOverflow` property/u,
 		'should throw a type error when the third argument is an array.'
 	);
 
 	t.throws(
 		() => stripDirs('a/b', Number.MAX_SAFE_INTEGER, {disallowOverflow: Buffer.from('true')}),
-		/^TypeError.*<Buffer .*> is neither true nor false\. `disallowOverflow` option must be a Boolean value/,
+		/^TypeError.*<Buffer .*> is neither true nor false\. `disallowOverflow` option must be a Boolean value/u,
 		'should throw a type error when `disallowOverflow` option is not a Boolean.'
 	);
 
 	t.throws(
 		() => stripDirs('a/b', 2, {disallowOverflow: true}),
-		/^RangeError.*Cannot strip more directories than there are/,
+		/^RangeError.*Cannot strip more directories than there are/u,
 		'should accept `narrow` option.'
 	);
 
 	t.throws(
 		() => stripDirs(),
-		/^TypeError.*undefined is not a string\. /,
+		/^RangeError.*Expected 2 or 3 arguments \(<string>, <integer>\[, <Object>\]\), but got no arguments\./u,
+		'should throw a type error when it takes no arguments.'
+	);
+
+	t.throws(
+		() => stripDirs('.', 10, {}, {}),
+		/^RangeError.*Expected 2 or 3 arguments \(<string>, <integer>\[, <Object>\]\), but got 4 arguments\./u,
 		'should throw a type error when it takes no arguments.'
 	);
 
