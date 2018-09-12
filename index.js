@@ -1,9 +1,12 @@
 'use strict';
 
 const {join, normalize, sep, posix: {isAbsolute: posixIsAbsolute}, win32: {isAbsolute: win32IsAbsolute}} = require('path');
-const util = require('util');
+const {inspect} = require('util');
 
-const isNaturalNumber = require('is-natural-number');
+const inspectWithKind = require('inspect-with-kind');
+const isPlainObj = require('is-plain-obj');
+
+const COUNT_ERROR = 'Expected a non-negative integer';
 
 module.exports = function stripDirs(...args) {
 	const argLen = args.length;
@@ -17,33 +20,46 @@ module.exports = function stripDirs(...args) {
 	const [pathStr, count, option = {disallowOverflow: false}] = args;
 
 	if (typeof pathStr !== 'string') {
-		throw new TypeError(`${util.inspect(pathStr)} is not a string. First argument to strip-dirs must be a path string.`);
-	}
-
-	if (posixIsAbsolute(pathStr) || win32IsAbsolute(pathStr)) {
-		throw new Error(`${pathStr} is an absolute path. strip-dirs requires a relative path.`);
-	}
-
-	if (!isNaturalNumber(count, {includeZero: true})) {
-		throw new Error(`The Second argument of strip-dirs must be a natural number or 0, but received ${
-			util.inspect(count)
+		throw new TypeError(`Expected a relative file path (<string>), but got a non-string value ${
+			inspectWithKind(pathStr)
 		}.`);
 	}
 
+	if (posixIsAbsolute(pathStr) || win32IsAbsolute(pathStr)) {
+		throw new Error(`Expected a relative file path, but got an absolute path ${inspect(pathStr)}.`);
+	}
+
+	if (typeof count !== 'number') {
+		throw new TypeError(`${COUNT_ERROR}, but got a non-number value ${inspectWithKind(count)}.`);
+	}
+
+	if (count < 0) {
+		throw new RangeError(`${COUNT_ERROR}, but got a negative value ${inspectWithKind(count)}.`);
+	}
+
+	if (!isFinite(count)) {
+		throw new RangeError(`${COUNT_ERROR}, but got ${count}.`);
+	}
+
+	if (count > Number.MAX_SAFE_INTEGER) {
+		throw new RangeError(`${COUNT_ERROR}, but got an extremely large number ${count}.`);
+	}
+
+	if (!Number.isInteger(count)) {
+		throw new RangeError(`${COUNT_ERROR}, but got a non-integer number ${count}.`);
+	}
+
 	if (argLen === 3) {
-		if (typeof option !== 'object') {
-			throw new TypeError(`${util.inspect(option)
-			} is not an object. Expected an object with a boolean \`disallowOverflow\` property.`);
+		if (!isPlainObj(option)) {
+			throw new TypeError(`Expected an option object to set strip-dirs option, but got ${
+				inspectWithKind(option)
+			}.`);
 		}
 
-		if (Array.isArray(option)) {
-			throw new TypeError(`${util.inspect(option)
-			} is an array. Expected an object with a boolean \`disallowOverflow\` property.`);
-		}
-
-		if ('disallowOverflow' in option && typeof option.disallowOverflow !== 'boolean') {
-			throw new TypeError(`${util.inspect(option.disallowOverflow)
-			} is neither true nor false. \`disallowOverflow\` option must be a Boolean value.`);
+		if (option.disallowOverflow !== undefined && typeof option.disallowOverflow !== 'boolean') {
+			throw new TypeError(`Expected \`disallowOverflow\` option to be a boolean, but got a non-boolean value ${
+				inspectWithKind(option.disallowOverflow)
+			}.`);
 		}
 	}
 

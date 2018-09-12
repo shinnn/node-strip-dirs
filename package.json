@@ -9,8 +9,8 @@
 		"index.js"
 	],
 	"scripts": {
-		"pretest": "eslint --fix --format=codeframe index.js test.js",
-		"test": "istanbul cover test.js"
+		"pretest": "eslint .",
+		"test": "nyc node test.js"
 	},
 	"keywords": [
 		"filepath",
@@ -22,15 +22,20 @@
 		"strip-components"
 	],
 	"dependencies": {
-		"is-natural-number": "^4.0.1"
+		"inspect-with-kind": "^1.0.5",
+		"is-plain-obj": "^1.1.0"
 	},
 	"devDependencies": {
-		"@shinnn/eslint-config-node": "^5.0.0",
-		"eslint": "^4.13.0",
-		"istanbul": "^0.4.5",
+		"@shinnn/eslint-config": "^6.7.0",
+		"eslint": "^5.5.0",
+		"nyc": "^13.0.1",
+		"nyc-config-common": "^1.0.0",
 		"tape": "^4.8.0"
 	},
 	"eslintConfig": {
-		"extends": "@shinnn/node"
+		"extends": "@shinnn"
+	},
+	"nyc": {
+		"extends": "nyc-config-common"
 	}
 }
