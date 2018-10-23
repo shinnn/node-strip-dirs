@@ -2,7 +2,6 @@
 
 [![npm version](https://img.shields.io/npm/v/strip-dirs.svg)](https://www.npmjs.com/package/strip-dirs)
 [![Build Status](https://img.shields.io/travis/shinnn/node-strip-dirs.svg)](https://travis-ci.org/shinnn/node-strip-dirs)
-[![Build status](https://ci.appveyor.com/api/projects/status/pr5edbtg59f6xfgn?svg=true)](https://ci.appveyor.com/project/ShinnosukeWatanabe/node-strip-dirs)
 [![Coverage Status](https://img.shields.io/coveralls/shinnn/node-strip-dirs.svg)](https://coveralls.io/github/shinnn/node-strip-dirs)
 
 Remove leading directory components from a path, like [tar(1)](http://linuxcommand.org/lc3_man_pages/tar1.html)'s `--strip-components` option
